@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  medgemma-api:
+    build: .
+    container_name: medgemma-api
+    ports:
+      - "8000:8000"
+    restart: always
+    # อนุญาตให้ Docker มุดออกมาคุยกับ Localhost (Ollama) ของ Windows ได้
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
