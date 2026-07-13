@@ -1,10 +1,10 @@
-# 🏥 MedGemma Gallstone Backend API
+# MedGemma Gallstone Backend API
 
 ระบบ API สำหรับการสกัดข้อมูลนิ่วในถุงน้ำดีจากข้อความทางการแพทย์ (Ultrasound Reports) โดยใช้โมเดล AI (MedGemma) ที่ถูก Fine-tuned มาเฉพาะทาง ระบบนี้ถูกออกแบบให้ส่วนของ Backend ทำงานอยู่บน **Docker** เพื่อความง่ายในการขยายสเกล และให้ส่วนของ AI ประมวลผลบน **Ollama (Host Machine)** เพื่อรีดประสิทธิภาพการทำงานสูงสุด
 
 ---
 
-## 🏗️ สถาปัตยกรรมระบบ (Architecture)
+## สถาปัตยกรรมระบบ (Architecture)
 - **API Server:** รันบน Docker Container (FastAPI, Python 3.10) ทำหน้าที่รับคำขอ, คัดกรองข้อมูล, และจัดรูปแบบคำตอบ
 - **AI Engine:** รันแบบ Native บน Windows Host Machine ผ่าน Ollama (CPU-based inference)
 
@@ -12,7 +12,7 @@
 
 ---
 
-## 🚀 วิธีติดตั้งและรันระบบ (Setup & Run)
+## วิธีติดตั้งและรันระบบ (Setup & Run)
 
 ### 1. ฝั่ง AI (Ollama บนเครื่อง Host)
 ระบบนี้ต้องการโมเดล AI `medgemma-gallstone` ให้รันอยู่บน Ollama ในเครื่อง Host
@@ -31,15 +31,15 @@
    docker-compose up -d --build
    ```
 4. ตรวจสอบการทำงานของ Backend ว่าออนไลน์หรือไม่ โดยเข้าไปที่เบราว์เซอร์:
-   👉 `http://localhost:8000/health` (ควรขึ้นข้อความว่า Backend is running and ready)
+   > `http://localhost:8000/health` (ควรขึ้นข้อความว่า Backend is running and ready)
 
 ---
 
-## 📡 คู่มือเชื่อมต่อ API (สำหรับทีมพัฒนาระบบโรงพยาบาล SS)
+## คู่มือเชื่อมต่อ API (สำหรับทีมพัฒนาระบบโรงพยาบาล SS)
 
 ระบบสื่อสารด้วย **JSON** ผ่านโพรโทคอล **HTTP POST** แบบ Synchronous (รอรับผลทันที ใช้เวลาประมาณ 2-5 วินาทีต่อ 1 รีเควสต์)
 
-### 🟢 Endpoint: `/api/extract-gallstone`
+### Endpoint: `/api/extract-gallstone`
 
 - **Method:** `POST`
 - **URL:** `http://localhost:8000/api/extract-gallstone`
