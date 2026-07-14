@@ -109,7 +109,22 @@ def extract_data(patient: PatientData):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error connecting to Ollama: {str(e)}")
 
-# Health Check Route สำหรับให้ Docker เช็คว่าระบบปกติดีไหม
+# Health Check Route สำหรับให้ Docker เช็คว่าระบบปกติดีไหม และเช็ค Ollama ด้วย
 @app.get("/health")
 def health_check():
-    return {"status": "Backend is running and ready"}
+    status_data = {"backend": "running"}
+    base_ollama_url = OLLAMA_URL.replace("/api/generate", "")
+    
+    try:
+        response = requests.get(base_ollama_url, timeout=3)
+        if response.status_code == 200:
+            status_data["ollama"] = "ready"
+            status_data["overall_status"] = "System is fully operational"
+        else:
+            status_data["ollama"] = f"error (status code: {response.status_code})"
+            status_data["overall_status"] = "Not ready: Ollama returned an error"
+    except Exception:
+        status_data["ollama"] = "down or unreachable"
+        status_data["overall_status"] = "Not ready: Cannot connect to Ollama"
+        
+    return status_data
