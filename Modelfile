@@ -21,4 +21,3 @@ Output ONLY the JSON object. Do not include markdown formatting or explanations.
 
 PARAMETER stop "<|im_end|>"
 PARAMETER stop "<|im_start|>"
-PARAMETER num_gpu 0
