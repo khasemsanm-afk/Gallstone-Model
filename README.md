@@ -3,8 +3,7 @@
 ระบบ AI (MedGemma) สำหรับการสกัดข้อมูลนิ่วในถุงน้ำดีจากข้อความทางการแพทย์ (Ultrasound Reports) อัตโนมัติให้ออกมาเป็นรูปแบบ JSON
 โปรเจกต์นี้ถูกออกแบบให้สามารถประมวลผลบนคอมพิวเตอร์ทั่วไปได้โดยไม่จำเป็นต้องมีหน่วยประมวลผลกราฟิกแยก (No GPU Required) ด้วยการแบ่งสถาปัตยกรรมการทำงานออกเป็น 2 ส่วนหลัก:
 1. **API Server (Backend):** ทำงานบน Docker Container (FastAPI) มีหน้าที่รับคำขอ (Request), คัดกรองข้อมูล, และจัดรูปแบบคำตอบ (Response)
-2. **AI Engine:** ทำงานแบบ Native บนเครื่อง Host ผ่าน Ollama (CPU-based inference)
-
+2. **AI Engine:** ทำงานแบบ Native บนเครื่อง Host ผ่าน Ollama
 ---
 
 ## สถาปัตยกรรมระบบ (Architecture)
