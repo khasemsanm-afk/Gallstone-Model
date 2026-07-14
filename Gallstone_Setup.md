@@ -17,7 +17,7 @@ gcloud compute scp --recurse gallstone-trainer:model_ollama_gguf D:\Work\finetun
 
 ---
 
-## 🦙 ขั้นที่ 2: ติดตั้งโปรแกรม Ollama (ตัวรัน AI บน CPU)
+## ขั้นที่ 2: ติดตั้งโปรแกรม Ollama (ตัวรัน AI บน CPU)
 1. เข้าไปที่เว็บไซต์: [https://ollama.com/download](https://ollama.com/download)
 2. คลิกดาวน์โหลดสำหรับ **Windows**
 3. เมื่อดาวน์โหลดเสร็จ ให้ดับเบิลคลิกไฟล์ `OllamaSetup.exe` แล้วกด Install ติดตั้งตามปกติ
@@ -25,7 +25,7 @@ gcloud compute scp --recurse gallstone-trainer:model_ollama_gguf D:\Work\finetun
 
 ---
 
-## ⚙️ ขั้นที่ 3: สร้างไฟล์ตั้งค่า (Modelfile)
+## ขั้นที่ 3: สร้างไฟล์ตั้งค่า (Modelfile)
 เราต้องเขียนกฎบอก Ollama ว่าให้โหลดไฟล์นี้และใช้เทมเพลตการคุยแบบไหน
 
 1. เปิดโฟลเดอร์ `D:\Work\finetune\qlora_gallstone_v2\models\model_ollama_gguf`
