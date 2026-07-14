@@ -23,6 +23,38 @@ flowchart LR
 
 ---
 
+## การรองรับระบบปฏิบัติการ (OS Compatibility & Network Settings)
+
+โปรเจกต์นี้รองรับการทำงานบน **Windows, macOS และ Linux** แต่เนื่องจากระบบเครือข่ายของ Docker ทำงานแตกต่างกันในแต่ละ OS จึงต้องตั้งค่า `docker-compose.yml` และ `backend/main.py` ให้ตรงกับ OS ที่ใช้รัน Server ดังนี้:
+
+### กรณีรันบน Windows หรือ macOS (ค่าเริ่มต้นของโค้ดบน GitHub)
+Docker Desktop จะทำงานผ่าน Virtual Machine (VM) ทำให้ต้องใช้คำสั่งพิเศษเพื่อให้ Docker ทะลุกำแพงออกมาหา Ollama ที่อยู่บน Host เครื่องหลัก
+*   **ไฟล์ `backend/main.py`:** ใช้ `OLLAMA_URL = "http://host.docker.internal:11434/api/generate"`
+*   **ไฟล์ `docker-compose.yml`:**
+    ```yaml
+    services:
+      api:
+        ports:
+          - "8000:8000"
+        extra_hosts:
+          - "host.docker.internal:host-gateway"
+    ```
+
+### กรณีรันบน Linux Server (เช่น Ubuntu, CentOS) 🐧
+Linux รองรับฟีเจอร์ `network_mode: "host"` ของ Docker อย่างสมบูรณ์แบบ ซึ่งจะช่วยทลายกำแพงเครือข่ายทิ้ง ทำให้ Docker เชื่อมต่อกับ Ollama (Localhost) และระบบเครือข่ายของ Server (VPN/Intranet) ได้ตรงไปตรงมาที่สุด
+*   **ไฟล์ `backend/main.py`:** ใช้ `OLLAMA_URL = "http://localhost:11434/api/generate"`
+*   **ไฟล์ `docker-compose.yml`:** ลบ `ports` และ `extra_hosts` ทิ้ง แล้วใช้ `network_mode: "host"` แทน
+    ```yaml
+    services:
+      api:
+        network_mode: "host"
+        command: uvicorn main:app --host 0.0.0.0 --port 8001  # (สามารถกำหนดพอร์ตที่ต้องการได้ ป้องกันการชนกับพอร์ตเดิมของระบบโรงพยาบาล)
+    ```
+*   **การอนุญาตสิทธิ์:** บน Linux คำสั่ง Docker จะต้องใช้ `sudo docker compose up -d --build` ในการเริ่มต้นระบบ
+*   **การตั้งค่า Ollama (บน Linux):** หากพบปัญหา Connection Timeout ต้องเปิดให้ Ollama รับ Connection จากภายนอก โดยเพิ่ม `Environment="OLLAMA_HOST=0.0.0.0"` ในไฟล์ `/etc/systemd/system/ollama.service` แล้วรีสตาร์ท Ollama
+
+---
+
 ## คู่มือการติดตั้งระบบ (Setup Guide)
 
 ### ขั้นที่ 1: เตรียมไฟล์ AI Model (GGUF)

@@ -6,8 +6,8 @@ from pydantic import BaseModel
 
 app = FastAPI(title="Gallstone AI Extraction API", version="1.0")
 
-# ชี้ไปที่ Ollama ผ่าน localhost โดยตรง (สำหรับรันแบบ Host Mode บน Linux)
-OLLAMA_URL = "http://localhost:11434/api/generate"
+# ชี้ไปที่ Ollama บน Windows เครื่องหลัก (host.docker.internal คือ IP ของ Windows)
+OLLAMA_URL = "http://host.docker.internal:11434/api/generate"
 MODEL_NAME = "medgemma-gallstone"
 
 class PatientData(BaseModel):
