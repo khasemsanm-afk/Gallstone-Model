@@ -74,12 +74,11 @@ Linux รองรับฟีเจอร์ `network_mode: "host"` ของ D
    ```
 
 ### ขั้นที่ 4: เปิดระบบ Backend API (Docker)
-1. ติดตั้ง Docker Desktop สำหรับ Windows
-2. เปิด PowerShell และนำทางไปยังโฟลเดอร์ `backend`:
+1. เปิด PowerShell และนำทางไปยังโฟลเดอร์ `backend`:
    ```powershell
    cd backend
    ```
-3. รันคำสั่งสร้างและเปิด Backend Container:
+2. รันคำสั่งสร้างและเปิด Backend Container:
    ```powershell
    docker-compose up -d --build
    ```
@@ -151,6 +150,5 @@ Linux รองรับฟีเจอร์ `network_mode: "host"` ของ D
 
 ## การบำรุงรักษาและปัญหาที่พบบ่อย (Maintenance & Troubleshooting)
 
-- **การหยุดการทำงานของ API:** รันคำสั่ง `docker-compose down` ในโฟลเดอร์ backend
 - **การตรวจสอบ Log ของระบบ:** รันคำสั่ง `docker logs -f medgemma-api`
-- **ปัญหาการเชื่อมต่อ API จากเครื่องอื่น:** ให้ตรวจสอบ Windows Defender Firewall ในเครื่องที่เปิดใช้งาน AI ว่ามีการอนุญาต (Inbound Rule) ให้เข้าถึงพอร์ต 8000 ได้หรือไม่
+- **ปัญหาการเชื่อมต่อ API จากเครื่องอื่น:** ให้ตรวจสอบ Windows Defender Firewall ในเครื่องที่เปิดใช้งาน AI ว่ามีการอนุญาต (Inbound Rule) ให้เข้าถึงพอร์ต 8001 ได้หรือไม่
