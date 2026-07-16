@@ -10,7 +10,7 @@
 
 ```mermaid
 flowchart LR
-    SS[Hospital System] <-->|HTTP POST :8000| Docker
+    SS[Hospital System] <--> |HTTP POST :8000| Docker
     subgraph Docker ["Docker Environment"]
         API[FastAPI Container]
     end
