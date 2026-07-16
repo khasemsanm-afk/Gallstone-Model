@@ -83,8 +83,8 @@ Linux รองรับฟีเจอร์ `network_mode: "host"` ของ D
    ```powershell
    docker-compose up -d --build
    ```
-*(ตรวจสอบความพร้อมของระบบได้ที่: `http://localhost:8000/health`)*
-*(สามารถทดสอบการเรียกใช้งาน API ผ่าน Swagger UI ได้ที่: `http://localhost:8000/docs`)*
+*(ตรวจสอบความพร้อมของระบบได้ที่: `http://localhost:8001/health`)*
+*(สามารถทดสอบการเรียกใช้งาน API ผ่าน Swagger UI ได้ที่: `http://localhost:8001/docs`)*
 
 ---
 
@@ -94,7 +94,7 @@ Linux รองรับฟีเจอร์ `network_mode: "host"` ของ D
 
 ### Endpoint: `/api/extract-gallstone`
 - **Method:** `POST`
-- **URL:** `http://<IP-Address>:8000/api/extract-gallstone` (หากเรียกจากเครื่องเดียวกันใช้ `localhost:8000`)
+- **URL:** `http://<IP-Address>:8001/api/extract-gallstone` (หากเรียกจากเครื่องเดียวกันใช้ `localhost:8001`)
 - **Content-Type:** `application/json`
 
 #### Request Payload (ขาเข้า)
