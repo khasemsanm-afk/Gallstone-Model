@@ -74,7 +74,6 @@ def extract_data(patient: PatientData):
         }
     
     # 2. ยิงไปหา Ollama ที่อยู่บน Windows
-    # ใช้ Prompt สั้นๆ เพราะกฎยาวๆ ถูกฝังใน Modelfile ของ Ollama แล้ว
     user_prompt = f"Extract gallstone information from this report:\n\n{cleaned_text}"
     
     payload = {
