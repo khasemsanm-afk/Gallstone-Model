@@ -95,7 +95,6 @@
 
 - **เครื่อง Linux Server** ที่ติดตั้ง Docker แล้ว
 - **Ollama** ติดตั้งบน Server แล้ว (ดาวน์โหลดที่ [https://ollama.com](https://ollama.com))
-- **Git** ติดตั้งบน Server แล้ว
 
 ---
 
