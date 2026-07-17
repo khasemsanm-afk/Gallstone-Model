@@ -1,8 +1,9 @@
-# MedGemma Gallstone AI Project
+# MedGemma Gallstone AI Project และส่วนของการ train model จะอยู่ใน Folder scripts
 
 ระบบ AI (MedGemma) สำหรับการสกัดข้อมูลนิ่วในถุงน้ำดีจากข้อความทางการแพทย์ (Ultrasound Reports) อัตโนมัติให้ออกมาเป็นรูปแบบ JSON ด้วยการแบ่งสถาปัตยกรรมการทำงานออกเป็น 2 ส่วนหลัก:
 1. **API Server (Backend):** ทำงานบน Docker Container (FastAPI) มีหน้าที่รับคำขอ (Request), คัดกรองข้อมูล, และจัดรูปแบบคำตอบ (Response)
 2. **AI Engine:** ทำงานแบบ Native บนเครื่อง Host ผ่าน Ollama
+
 ---
 
 ## สถาปัตยกรรมระบบ (Architecture)
