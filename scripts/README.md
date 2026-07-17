@@ -825,10 +825,6 @@ user_prompt = f"Extract kidney stone information from this report:\n\n{cleaned_t
 
 
 
-### Q: Docker รันแล้ว Backend เชื่อมต่อ Ollama ไม่ได้?
-
-**A:** บน Linux Server ต้องใช้ `network_mode: "host"` ใน `docker-compose.yml` และ Ollama ต้องตั้งค่า `OLLAMA_HOST=0.0.0.0` (ดูรายละเอียดในไฟล์ `project_progress.md` หัวข้อ Phase 6)
-
 ### Q: จะเปลี่ยนพอร์ตจาก 8001 เป็นตัวอื่นต้องทำอย่างไร?
 
 **A:** แก้ 1 จุด: ไฟล์ `backend/docker-compose.yml` บรรทัดที่ 8
