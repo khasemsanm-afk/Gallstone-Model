@@ -660,6 +660,58 @@ KEYWORDS = re.compile(r"\b(kidney|kidneys|renal|calculus|calculi|nephrolithiasis
 
 
 
+#### จุดที่ 3.5: เพิ่มตัวกรอง "คำต้องห้าม" เพื่อป้องกัน AI สับสน (NEGATIVE_KEYWORDS)
+
+> **⚠️ ต้องทำทุกครั้งที่โรคใหม่มีคำว่า `stone` ซ้ำซ้อนกับอวัยวะอื่น** เช่น โปรเจกต์นิ่วในไต (kidney stone) ที่ใช้คำว่า `stone` เหมือนกับนิ่วในถุงน้ำดี
+
+**ปัญหาที่เกิดขึ้น:** ถ้า Backend ดึงคำว่า `stone` จากทุกบรรทัดมารวมกัน AI จะสับสนเมื่อเห็นตัวเลขจากหลายอวัยวะพร้อมกัน เช่น รายงานที่มีทั้งนิ่วถุงน้ำดีและนิ่วในไต Backend จะดึงทั้ง `2.0-2.2 cm gallstone` และ `0.3 cm renal stone` มาให้ AI อ่านในครั้งเดียว ทำให้ AI ตอบ `null` แทนที่จะระบุขนาดที่ถูกต้อง
+
+**วิธีแก้:** เพิ่ม 2 ตัวแปรใหม่ต่อจาก `GB_KEYWORDS`:
+
+```python
+# ตัวแปรที่ 1: รายชื่ออวัยวะที่ไม่เกี่ยวข้องกับโรคที่กำลังสกัด
+# ถ้าบรรทัดไหนมีคำเหล่านี้ร่วมกับคำว่า stone ให้เตะบรรทัดนั้นทิ้ง
+NEGATIVE_KEYWORDS = re.compile(r"\b(kidney|kidneys|renal|urinary|bladder|prostate)\b", re.IGNORECASE)
+
+# ตัวแปรที่ 2: คำที่เจาะจงว่าเป็นโรคของเราแน่ๆ (ยันต์กันผี)
+# ถ้าบรรทัดมีคำต้องห้าม แต่ดันมีคำในกลุ่มนี้ด้วย แสดงว่าหมอเขียนรวบยอดมา ให้เก็บไว้ อย่าลบทิ้ง
+EXPLICIT_GB_KEYWORDS = re.compile(r"\b(gallbladder|gall\s*bladder|gb|cholelithiasis|gall\s*stones?|gallstones?)\b", re.IGNORECASE)
+```
+
+**แล้วปรับฟังก์ชัน `extract_gb_paragraphs` ให้เช็ค 2 ชั้น:**
+
+```python
+def extract_gb_paragraphs(text: str) -> str:
+    lines = text.replace("\r\n", "\n").split("\n")
+    kept_lines = []
+    for line in lines:
+        line_clean = line.strip()
+        if not line_clean:
+            continue
+        if GB_KEYWORDS.search(line_clean):                       # ชั้นที่ 1: เจอคำเกี่ยวกับโรคไหม?
+            if NEGATIVE_KEYWORDS.search(line_clean):             # ชั้นที่ 2: เจอคำอวัยวะต้องห้ามไหม?
+                if not EXPLICIT_GB_KEYWORDS.search(line_clean):  # ถ้าไม่มียันต์กันผี ลบทิ้ง
+                    continue
+        line_clean = re.sub(r"\s+", " ", line_clean)
+        kept_lines.append(line_clean.lower())
+    return " ".join(kept_lines)
+```
+
+**ตัวอย่างการทำงาน:**
+
+| บรรทัดในรายงาน | ผลลัพธ์ | เพราะ |
+|---|---|---|
+| `Gallbladder: Two gallstones, size 2.0-2.2 cm.` | ✅ เก็บไว้ | ไม่มีคำต้องห้าม |
+| `Kidneys: A 0.3-cm small stone at left kidney.` | ❌ ลบทิ้ง | มีคำว่า `kidney` และไม่มียันต์กันผี |
+| `Urinary bladder: No stone or mass.` | ❌ ลบทิ้ง | มีคำว่า `bladder` |
+| `Gallbladder stone 2cm. Kidneys normal.` | ✅ เก็บไว้ | มีคำว่า `kidney` แต่มียันต์กันผี `Gallbladder` คุ้มครองอยู่ |
+
+> **💡 หมายเหตุสำหรับโรคอื่น:** ถ้าทำโปรเจกต์นิ่วในไต ให้สลับคำต้องห้าม/ยันต์กันผีตามนี้
+> - `NEGATIVE_KEYWORDS` ใส่คำว่า `gallbladder, biliary, cholelithiasis` (ไม่อยากให้ดึงเรื่องถุงน้ำดีมาปน)
+> - `EXPLICIT_KEYWORDS` ใส่คำว่า `kidney, renal, nephrolithiasis` (ยันต์กันผีของโปรเจกต์ไต)
+
+
+
 #### จุดที่ 4: เปลี่ยนชื่อ API Endpoint และ JSON ด่านสกัด (บรรทัดที่ 57, 61-74)
 
 ```python
