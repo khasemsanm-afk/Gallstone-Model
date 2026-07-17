@@ -16,6 +16,7 @@ class PatientData(BaseModel):
 # อัลกอริทึมตัดคำ (แบบเดียวกับ Data Training)
 GB_KEYWORDS = re.compile(r"\b(gallbladder|gall\s*bladder|gb|gall\s*stones?|gallstones?|gb\s*stones?|cholelithiasis|calculi|calculus|gs|stones?|biliary|cystic\s+duct|bile\s+ducts?|cbd|ihd|cholecyst\w*|polyps?|sludges?)\b", re.IGNORECASE)
 NEGATIVE_KEYWORDS = re.compile(r"\b(kidney|kidneys|renal|urinary|bladder|prostate)\b", re.IGNORECASE)
+EXPLICIT_GB_KEYWORDS = re.compile(r"\b(gallbladder|gall\s*bladder|gb|cholelithiasis|gall\s*stones?|gallstones?)\b", re.IGNORECASE)
 
 def clean_medical_text(report: str) -> str:
     report = str(report) if report else ""
@@ -39,7 +40,8 @@ def clean_medical_text(report: str) -> str:
                 continue
             if GB_KEYWORDS.search(line_clean):
                 if NEGATIVE_KEYWORDS.search(line_clean):
-                    continue
+                    if not EXPLICIT_GB_KEYWORDS.search(line_clean):
+                        continue
                 line_clean = re.sub(r"\s+", " ", line_clean)
                 kept_lines.append(line_clean.lower())
         return " ".join(kept_lines)
